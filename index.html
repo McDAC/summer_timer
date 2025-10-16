@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Таймер до лета</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #67B26F, #4ca2cd);
+            color: white;
+            text-align: center;
+            padding: 50px;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            max-width: 800px;
+            width: 90%;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .timer {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .time-unit {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+            min-width: 140px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .time-value {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .time-label {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .summer-image {
+            margin-top: 30px;
+            font-size: 5rem;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .message {
+            font-size: 1.5rem;
+            margin-top: 20px;
+            opacity: 0.9;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .time-unit {
+                min-width: 100px;
+                padding: 15px;
+            }
+            
+            .time-value {
+                font-size: 2rem;
+            }
+            
+            .summer-image {
+                font-size: 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>До лета осталось:</h1>
+        <div class="timer">
+            <div class="time-unit">
+                <div class="time-value" id="days">0</div>
+                <div class="time-label">дней</div>
+            </div>
+            <div class="time-unit">
+                <div class="time-value" id="hours">0</div>
+                <div class="time-label">часов</div>
+            </div>
+            <div class="time-unit">
+                <div class="time-value" id="minutes">0</div>
+                <div class="time-label">минут</div>
+            </div>
+            <div class="time-unit">
+                <div class="time-value" id="seconds">0</div>
+                <div class="time-label">секунд</div>
+            </div>
+        </div>
+        <div class="summer-image">☀️</div>
+        <div class="message">Лето, мы ждём тебя! )</div>
+    </div>
+
+    <script>
+        function updateTimer() {
+            // Определяем дату начала лета (1 июня текущего года)
+            const currentYear = new Date().getFullYear();
+            const summerStart = new Date(currentYear, 5, 1); // 5 = июнь (месяцы от 0 до 11)
+            
+            // Если лето уже наступило в этом году, берем следующее лето
+            if (new Date() > summerStart) {
+                summerStart.setFullYear(currentYear + 1);
+            }
+            
+            const now = new Date();
+            const timeRemaining = summerStart - now;
+            
+            // Вычисляем дни, часы, минуты и секунды
+            const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+            
+            // Обновляем значения на странице
+            document.getElementById('days').textContent = days;
+            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+        }
+        
+        // Обновляем таймер каждую секунду
+        setInterval(updateTimer, 1000);
+        
+        // Запускаем сразу при загрузке страницы
+        updateTimer();
+    </script>
+</body>
+</html>
